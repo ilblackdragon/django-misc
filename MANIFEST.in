@@ -1,2 +1,2 @@
-recursive-include pymisc *
+recursive-include django-misc *
 exclude *.pyc *.orig

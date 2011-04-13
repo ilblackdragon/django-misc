@@ -1,4 +1,4 @@
-MODULE=pymisc
+MODULE=django-misc
 
 clean:
 	sudo rm -rf build dist $(MODULE).egg-info

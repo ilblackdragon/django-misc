@@ -1,9 +1,10 @@
 ..   -*- mode: rst -*-
 
-pymisc
+django-misc
 ##############
 
-**Python misc** is module with set of python modules, where you'll find anything from decorators to data readers. One thing in common - all this helps to write code faster.
+**Django misc** is module with set of utilities, decorators, templatetags that everybody uses at least once in project.
+So here they all in one application, that will grow to aggregate all usefull utilities for Django.
 
 .. contents::
 
@@ -12,22 +13,24 @@ Requirements
 
 - python >= 2.5
 - pip >= 0.8
-- config >= 0.3 (optional)
-
+- django >= 1.2
 
 Installation
 ------------
 
-**Python misc** should be installed using pip: ::
+**Django misc** should be installed using pip: ::
 
-    pip install git+git://github.com/ilblackdragon/pymisc.git
+    pip install git+git://github.com/ilblackdragon/django-misc.git
 
 
-Use pymisc
+Use django-misc
 ------------
 
-1) Import pymisc in your module
-2) Profit =)
+Add 'misc' application to your project's settings.py:
 
-More detailed information will be posted later
+INSTALLED_APPS = (
+    ...
+    'misc', 
+)
 
+Additional how to use some specific functional will be added later

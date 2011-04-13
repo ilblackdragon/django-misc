@@ -1,8 +1,11 @@
-Python miscellaneous - module with different useful stuff.
+Django miscellaneous - module with different useful stuff for django.
 
 Here you'll find:
 
-* Different kind of decorators
-* Useful reader for row\column data files
-* Will add more in nearest future
+* Couple decorators, like render_to and receive
+* Json_encode module for simplify work with json
+* Some usefull templatetags, like set, filter, get etc
+* Some additional utilities
+* Bbcode template tags
+* Template tags that provide like and share for social sevices
 

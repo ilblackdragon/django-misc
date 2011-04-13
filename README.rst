@@ -28,9 +28,9 @@ Use django-misc
 
 Add 'misc' application to your project's settings.py:
 
-INSTALLED_APPS = (
-    ...
-    'misc', 
-)
+    INSTALLED_APPS = (
+        ...
+        'misc', 
+    )
 
 Additional how to use some specific functional will be added later

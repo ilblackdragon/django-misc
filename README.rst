@@ -29,6 +29,10 @@ Requirements
 - pip >= 0.8
 - django >= 1.2
 
+Optional (for html clearing and bbcodes):
+- BeautifulSoup 
+- git+git://github.com/frol/postmarkup.git
+
 Installation
 ------------
 

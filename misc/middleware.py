@@ -1,4 +1,4 @@
-from .utils import custom_spaceless
+from misc.utils import custom_spaceless
 
 class SpacelessMiddleware(object):
     def process_response(self, request, response):

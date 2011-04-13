@@ -1,0 +1,2 @@
+recursive-include pymisc *
+exclude *.pyc *.orig

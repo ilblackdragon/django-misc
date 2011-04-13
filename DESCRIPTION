@@ -1,0 +1,8 @@
+Python miscellaneous - module with different useful stuff.
+
+Here you'll find:
+
+* Different kind of decorators
+* Useful reader for row\column data files
+* Will add more in nearest future
+

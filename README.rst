@@ -8,6 +8,20 @@ So here they all in one application, that will grow to aggregate all usefull uti
 
 .. contents::
 
+Quick overview
+-------------
+
+Here you'll find:
+
+* Couple decorators, like render_to and receive
+* Json_encode module for simplify work with json
+* Some usefull templatetags, like set, filter, get etc
+* Some additional utilities
+* Bbcode template tags
+* Template tags that provide like and share for social sevices
+
+
+
 Requirements
 -------------
 
@@ -23,14 +37,15 @@ Installation
     pip install git+git://github.com/ilblackdragon/django-misc.git
 
 
+Setup
+------------
+
+- Add 'misc' to INSTALLED_APPS ::
+
+  INSTALLED_APPS += ( 'misc', )
+    
+    
 Use django-misc
 ------------
 
-Add 'misc' application to your project's settings.py:
-
-    INSTALLED_APPS = (
-        ...
-        'misc', 
-    )
-
-Additional how to use some specific functional will be added later
+How to use some specific functional will be added later

@@ -7,4 +7,6 @@
 .git
 *.log
 build/
+dist/
+django_misc.egg-info/
 Thumbs.db

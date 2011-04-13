@@ -5,8 +5,9 @@ import re
 from postmarkup import render_bbcode as _render_bbcode, strip_bbcode as _strip_bbcode
 
 from django.conf import settings
-from django.utils.encoding import smart_str, force_unicode
+from django.utils.encoding import smart_str, force_unicode, iri_to_uri
 from django.utils.safestring import mark_safe
+from django.http import HttpResponse
 
 class HttpResponseReload(HttpResponse):
     """

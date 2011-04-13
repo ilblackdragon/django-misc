@@ -30,6 +30,7 @@ Requirements
 - django >= 1.2
 
 Optional (for html clearing and bbcodes):
+
 - BeautifulSoup 
 - git+git://github.com/frol/postmarkup.git
 
@@ -47,6 +48,14 @@ Setup
 - Add 'misc' to INSTALLED_APPS ::
 
   INSTALLED_APPS += ( 'misc', )
+  
+- If you want to use the html clearer ::
+    
+    pip install BeautifulSoup
+    
+- If you want to use bbcodes ::
+    
+    pip install git+git://github.com/frol/postmarkup.git
     
     
 Use django-misc

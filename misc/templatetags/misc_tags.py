@@ -130,3 +130,7 @@ class FilterTag(Node):
             kwargs[key] = Variable(self.kwargs[key]).resolve(context)
         query_list = Variable(self.query_list_name).resolve(context)
         return query_list.filter(**kwargs)
+
+@register.simple_tag
+def get_settings(key, default=None):
+    return getattr(settings, key, default)

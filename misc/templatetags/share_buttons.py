@@ -22,9 +22,9 @@ def current_site_url():
 @register.simple_tag
 def tweet_it(url, title):
     return """
-        <div class="twitter">
+        <span class="twitter">
             <a href="http://twitter.com/home/?%s" title="%s" target="_blank"></a>
-        </div>    
+        </span>    
     """ % (urllib.urlencode({'status': title + (u" " + url + u" #escalibro").encode('utf-8')}), ugettext("Tweet it"))    
 
 @register.simple_tag
@@ -39,17 +39,17 @@ def tweet_like(url, title):
 @register.simple_tag
 def buzz_it(url, title):
     return """
-        <div class="buzz">
+        <span class="buzz">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="http://www.google.com/buzz/post?%s" title="%s" target="_blank"></a>
-        </div>    
+        </span>    
     """ % (ugettext("Post link on Buzz"), urllib.urlencode({'url': url, 'message': title}), ugettext("Buzz it"))
     
 @register.simple_tag
 def facebook_it(url, title):
     return """
-        <div class="facebook">
+        <span class="facebook">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="http://www.facebook.com/sharer.php?%s" title="%s" target="_blank"></a>
-        </div>
+        </span>
     """ % (ugettext("Share link on FaceBook"), urllib.urlencode({'u': url, 't': title}), ugettext("To FaceBook"))
 
 @register.simple_tag
@@ -61,9 +61,9 @@ def facebook_like(url, title):
 @register.simple_tag
 def vk_it(url, title):
     return """
-        <div class="vk">
+        <span class="vk">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="http://vkontakte.ru/share.php?%s" title="%s"></a>
-        </div>
+        </span>
     """ % (ugettext("Share link on VKontakte"), urllib.urlencode({'url': url, 'title': title}), ugettext("To VKontakte"))
 
 @register.simple_tag
@@ -84,16 +84,16 @@ def vk_js():
         </script>
     """ % settings.VKONTAKTE_APPLICATION_ID
        
-share_functions = [tweet_it, buzz_it, facebook_it, vk_it] # Ordering
-like_functions = [tweet_like, facebook_like, vk_like]
+share_functions = [tweet_it, buzz_it, vk_it, facebook_it] # Ordering
+like_functions = [tweet_like, vk_like, facebook_like]
 
 def group_buttons(url, title, funcs, block_class):
     url = current_site_url() + url
     title = title.encode('utf-8')
-    res = "<div class=\"%s\">" % block_class
+    res = "<span class=\"%s\">" % block_class
     for f in funcs:
         res += f(url, title)
-    res += "</div>"
+    res += "</span>"
     return res
     
 @register.simple_tag

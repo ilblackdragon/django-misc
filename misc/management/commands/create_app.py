@@ -16,7 +16,6 @@ class Command(LabelCommand):
     can_import_settings = False
 
     def handle_label(self, app_name, directory=None, **options):
-        print("Calling me")
         if directory is None:
             directory = os.getcwd()
 

@@ -69,7 +69,6 @@ Development of django-misc happens at github: https://github.com/ilblackdragon/d
 License
 ============
 
-Licensed under a `GNU lesser general public license`_.
-
-.. _GNU lesser general public license: http://www.gnu.org/copyleft/lesser.html
-
+Copyright (C) 2009-2011 Ilya Polosukhin & Vladyslav Frolov
+This program is licensed under the MIT License (see LICENSE) 
+                          

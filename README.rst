@@ -70,5 +70,5 @@ License
 ============
 
 Copyright (C) 2009-2011 Ilya Polosukhin & Vladyslav Frolov
-This program is licensed under the MIT License (see LICENSE) 
-                          
+This program is licensed under the MIT License (see LICENSE)
+ 

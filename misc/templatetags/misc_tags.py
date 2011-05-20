@@ -72,6 +72,43 @@ class GetDict(Node):
             context[self.context_key] = default
         return ''
 
+class CallableVariable(Variable):
+
+    def _resolve_lookup(self, context):
+        """
+        Performs resolution of a real variable (i.e. not a literal) against the
+        given context.
+
+        As indicated by the method's name, this method is an implementation
+        detail and shouldn't be called by external code. Use Variable.resolve()
+        instead.
+        """
+        current = context
+        try: # catch-all for silent variable failures
+            for bit in self.lookups:
+                try: # dictionary lookup
+                    current = current[bit]
+                except (TypeError, AttributeError, KeyError):
+                    try: # attribute lookup
+                        current = getattr(current, bit)
+                    except (TypeError, AttributeError):
+                        try: # list-index lookup
+                            current = current[int(bit)]
+                        except (IndexError, # list index out of range
+                                ValueError, # invalid literal for int()
+                                KeyError,   # current is a dict without `int(bit)` key
+                                TypeError,  # unsubscriptable object
+                                ):
+                            raise VariableDoesNotExist("Failed lookup for key [%s] in %r", (bit, current)) # missing attribute
+        except Exception, e:
+            if getattr(e, 'silent_variable_failure', False):
+                current = settings.TEMPLATE_STRING_IF_INVALID
+            else:
+                raise
+
+        return current
+
+
 @register.tag
 def set(parser, token):
     """
@@ -85,21 +122,30 @@ def set(parser, token):
     new_token = Token(TOKEN_BLOCK, ' '.join(bits[:-1]))
     if bits[0] in parser.tags:
         func = parser.tags[bits[0]](parser, new_token)
+        args = []
     else:
-        func = Variable(bits[0])
-    return SetNode(func, bits[-1])
+        func = CallableVariable(bits[0])
+        args = [Variable(bit) for bit in bits[1:-1]]
+    return SetNode(func, args, bits[-1])
 
 class SetNode(Node):
 
-    def __init__(self, func, key):
+    def __init__(self, func, args, key):
         self.func = func
+        self.args = args
         self.key = key
 
     def render(self, context):
         if isinstance(self.func, Node):
             context[self.key] = self.func.render(context)
         else:
-            context[self.key] = self.func.resolve(context)
+            f = self.func.resolve(context)
+            print(f, self.func)
+            if callable(f):
+                args = [arg.resolve(context) for arg in self.args]
+                context[self.key] = f(*args)
+            else:
+                context[self.key] = f
         return ''
 
 @register.filter_function

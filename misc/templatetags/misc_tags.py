@@ -140,7 +140,6 @@ class SetNode(Node):
             context[self.key] = self.func.render(context)
         else:
             f = self.func.resolve(context)
-            print(f, self.func)
             if callable(f):
                 args = [arg.resolve(context) for arg in self.args]
                 context[self.key] = f(*args)

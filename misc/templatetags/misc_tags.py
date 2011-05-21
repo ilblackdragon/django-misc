@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from django.template import Library, Token, TOKEN_BLOCK, Node, Variable
+from django.template import Library, Token, TOKEN_BLOCK, Node, Variable, VariableDoesNotExist
 from django.conf import settings
 from django.template.defaultfilters import stringfilter
 

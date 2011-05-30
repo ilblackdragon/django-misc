@@ -1,5 +1,55 @@
 from django.contrib.admin.views.main import ChangeList
 
+def admin_tagify(short_description=None, allow_tags=True):
+    """
+    Decorator that add short_description and allow_tags to ModelAdmin list_display function.
+
+    Example:
+        
+        class AlbumAdmin(admin.ModelAdmin):                                                                                                                        
+            list_display = ['title', 'year', 'artist', 'total_tacks', 'view_track']
+
+            @admin_tagify("View track")
+            def view_songs(self, obj):
+                return "<a href=\"%s?album=%d\">%d tracks</a>" % (reverse("admin:music_track_changelist"), obj.id, obj.tracks.count())
+    """
+    def tagify(func):
+        func.allow_tags = bool(allow_tags)
+        if short_description:
+            func.short_description = short_description
+        return func
+
+    return tagify
+
+
+def foreign_field_func(field_name, short_description=None, admin_order_field=None): 
+    """
+    Allow to use ForeignKey field attributes at list_display in a simple way.
+
+    Example:
+        
+        from misc.admin import foreign_field_func as ff
+
+        class SongAdmin(admin.ModelAdmin):                                                                                                                        
+            list_display = ['name', 'time', 'artist', 'album', ff('track__num', "Track number"), ff('album__total_tracks')]
+    """  
+    def accessor(obj): 
+        val = obj 
+        for part in field_name.split('__'): 
+            val = getattr(val, part) 
+        return val 
+    
+    if short_description: 
+        accessor.short_description = short_description 
+    else: 
+        accessor.__name__ = field_name 
+    if admin_order_field: 
+        accessor.admin_order_field = admin_order_field 
+    else: 
+        accessor.admin_order_field  = (field_name,) 
+    
+    return accessor 
+
 
 class SpecialOrderingChangeList(ChangeList):
     """

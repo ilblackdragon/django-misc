@@ -12,5 +12,7 @@ def sync_site(app, created_models, verbosity, **kwargs):
         site.save()
     except Site.DoesNotExist: # In case if Site table doesn't created yet
         pass
+    except AttributeError: # In case if SITE_NAME or SITE_DOMAIN not set in settings
+        pass
 
 signals.post_syncdb.connect(sync_site)

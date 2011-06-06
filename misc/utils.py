@@ -5,9 +5,12 @@ import re
 from postmarkup import render_bbcode as _render_bbcode, strip_bbcode as _strip_bbcode
 
 from django.conf import settings
+from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
+from django.contrib.auth.models import AnonymousUser
+from django.http import HttpResponse
 from django.utils.encoding import smart_str, force_unicode, iri_to_uri
 from django.utils.safestring import mark_safe
-from django.http import HttpResponse
+
 
 class HttpResponseReload(HttpResponse):
     """
@@ -33,6 +36,10 @@ class HttpResponseReload(HttpResponse):
         self['Location'] = iri_to_uri(referer or "/")
 
 def custom_spaceless(value):
+    """
+    Remove spaces between tags and leading spaces in lines.
+    It works buggly for <pre> tag.
+    """
     return re.sub('(\n|\r|(>))[ \t]+((?(2)<))', '\\1\\3', force_unicode(value))
 #        .replace('\n', '').replace('\r', '')
 
@@ -72,3 +79,14 @@ def get_alphabets():
     return (alphabet_en, alphabet_ru)
     
 alphabet_en, alphabet_ru = get_alphabets()
+
+def user_from_session_key(session_key):
+    session_engine = __import__(settings.SESSION_ENGINE, {}, {}, [''])
+    session_wrapper = session_engine.SessionStore(session_key)
+    user_id = session_wrapper.get(SESSION_KEY)
+    auth_backend = load_backend(session_wrapper.get(BACKEND_SESSION_KEY))
+
+    if user_id and auth_backend:
+        return auth_backend.get_user(user_id)
+    else:
+        return AnonymousUser()

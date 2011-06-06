@@ -1,5 +1,3 @@
-..   -*- mode: rst -*-
-
 django-misc
 ##############
 
@@ -9,7 +7,7 @@ So here they all in one application, that will grow to aggregate all usefull uti
 .. contents::
 
 Quick overview
--------------
+==============
 
 Here you'll find:
 
@@ -23,7 +21,7 @@ Here you'll find:
 
 
 Requirements
--------------
+==============
 
 - python >= 2.5
 - pip >= 0.8
@@ -35,7 +33,7 @@ Optional (for html clearing and bbcodes):
 - git+git://github.com/frol/postmarkup.git
 
 Installation
-------------
+=============
 
 **Django misc** should be installed using pip: ::
 
@@ -43,11 +41,11 @@ Installation
 
 
 Setup
-------------
+============
 
 - Add 'misc' to INSTALLED_APPS ::
 
-  INSTALLED_APPS += ( 'misc', )
+    INSTALLED_APPS += ( 'misc', )
   
 - If you want to use the html clearer ::
     
@@ -59,6 +57,18 @@ Setup
     
     
 Use django-misc
-------------
+===============
 
 How to use some specific functional will be added later
+
+Contributing
+============
+
+Development of django-misc happens at github: https://github.com/ilblackdragon/django-misc
+
+License
+============
+
+Copyright (C) 2009-2011 Ilya Polosukhin & Vladyslav Frolov
+This program is licensed under the MIT License (see LICENSE)
+ 

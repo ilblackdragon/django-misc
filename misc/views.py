@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
 from django import http
 from django.conf import settings
+from django.dispatch import Signal
 from django.template import Context, loader
 from django.shortcuts import redirect
+
+from .signals import language_changed
+
 
 def server_error(request, template_name='500.html'):
     """
@@ -25,3 +29,19 @@ def redirect_by_name(request, name, **kwargs):
         if k in kwargs and callable(kwargs[k]):
             kwargs[k] = kwargs[k](kwargs)
     return redirect(name, **kwargs)
+
+def language_change(request, lang):
+    next = request.REQUEST.get('next', None)
+    if not next:
+        next = request.META.get('HTTP_REFERER', None) or '/'
+    response = redirect(next)
+    if lang and lang in map(lambda x: x[0], settings.LANGUAGES):
+        if request.user.is_authenticated():
+            profile = request.user.get_profile()
+            profile.language = lang
+            profile.save()
+        else:
+            response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang,
+                max_age=settings.SESSION_COOKIE_AGE)
+        language_changed.send(None, request=request, lang=lang)
+    return response

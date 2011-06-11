@@ -89,6 +89,7 @@ like_functions = [tweet_like, vk_like, facebook_like]
 
 def group_buttons(url, title, funcs, block_class):
     url = current_site_url() + url
+    url = url.encode('utf-8')
     title = title.encode('utf-8')
     res = "<span class=\"%s\">" % block_class
     for f in funcs:

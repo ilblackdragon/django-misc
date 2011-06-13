@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import http
 from django.conf import settings
+from django.contrib.auth.models import SiteProfileNotAvailable
 from django.dispatch import Signal
 from django.template import Context, loader
 from django.shortcuts import redirect
@@ -37,9 +38,14 @@ def language_change(request, lang):
     response = redirect(next)
     if lang and lang in map(lambda x: x[0], settings.LANGUAGES):
         if request.user.is_authenticated():
-            profile = request.user.get_profile()
-            profile.language = lang
-            profile.save()
+            try:
+                profile = request.user.get_profile()
+            except SiteProfileNotAvailable:
+                response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang,
+                    max_age=settings.SESSION_COOKIE_AGE)
+            else:
+                profile.language = lang
+                profile.save()
         else:
             response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang,
                 max_age=settings.SESSION_COOKIE_AGE)

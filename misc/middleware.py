@@ -1,5 +1,6 @@
 import re
 
+from django.contrib.auth.models import SiteProfileNotAvailable
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils import translation
 from django.utils.cache import patch_vary_headers
@@ -38,7 +39,7 @@ class LocaleMiddleware(object):
             try:
                 profile = request.user.get_profile()
                 return profile.language
-            except ObjectDoesNotExist:
+            except (ObjectDoesNotExist, SiteProfileNotAvailable):
                 pass
         return translation.get_language_from_request(request)
 

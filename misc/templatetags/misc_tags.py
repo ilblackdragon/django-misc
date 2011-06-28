@@ -86,6 +86,16 @@ class CallableVariable(Variable):
         current = context
         try: # catch-all for silent variable failures
             for bit in self.lookups:
+                if callable(current):
+                    if getattr(current, 'alters_data', False):
+                        current = settings.TEMPLATE_STRING_IF_INVALID
+                    else:
+                        try: # method call (assuming no args required)
+                            current = current()
+                        except TypeError: # arguments *were* required
+                            # GOTCHA: This will also catch any TypeError
+                            # raised in the function itself.
+                            current = settings.TEMPLATE_STRING_IF_INVALID # invalid method call
                 try: # dictionary lookup
                     current = current[bit]
                 except (TypeError, AttributeError, KeyError):

@@ -193,7 +193,7 @@ def clear_html_code(text):
                         res = ""
                         for x in list:
                             if x.find(':') > 0:
-                                keys = x.split(':')
+                                keys = [q.strip() for q in x.split(':', 1)]
                                 if style_check[tag.name].match(keys[0]) and (keys[0] not in style_value_check[tag.name] or style_value_check[tag.name][keys[0]].match(keys[1])):
                                     res += x + ';'
                         tag.attrs.remove(attr)
@@ -232,6 +232,7 @@ if __name__ == "__main__":
 <iframe src="http://vkontakte.ru/video_ext.php?oid=14071319&id=156556674&hash=2a4233a33890ef11&hd=1" width="607" height="360" frameborder="0"></iframe>
 Text1 <div style="text-align: center">Some text</div> Text2
 <a style="text-align:center;">Link</a>
+<b style="text-align: center;">qwe</b>
 <div align='center'>qwe</div>
 <center>ad</center>
     """

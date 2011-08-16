@@ -411,7 +411,7 @@ def clear_html_code(text):
                         res = ""
                         for x in list:
                             if x.find(':') > 0:
-                                keys = x.split(':')
+                                keys = [q.strip() for q in x.split(':', 1)]
                                 if style_check[tag.name].match(keys[0]) and (keys[0] not in style_value_check[tag.name] or style_value_check[tag.name][keys[0]].match(keys[1])):
                                     res += x + ';'
                         tag.attrs.remove(attr)

@@ -43,16 +43,18 @@ def custom_spaceless(value):
     return re.sub('(\n|\r|(>))[ \t]+((?(2)<))', '\\1\\3', force_unicode(value))
 #        .replace('\n', '').replace('\r', '')
 
-def render_bbcode(value):
+def render_bbcode(value, nbsp=False):
     """
     Generates (X)HTML from string with BBCode "markup".
     By using the postmark lib from:
     @see: http://code.google.com/p/postmarkup/
 
     """
-    value = mark_safe(_render_bbcode(value)\
-        .replace('&amp;#91;', '[').replace('&amp;#93;', ']'))
-    return value
+    value = _render_bbcode(value)\
+        .replace('&amp;#91;', '[').replace('&amp;#93;', ']')
+    if nbsp:
+        value = re.sub('(^|>)(\s+)', lambda r: r.group(1) + '&nbsp;' * len(r.group(2)), value)
+    return mark_safe(value)
 
 def strip_bbcode(value):
     """

@@ -87,9 +87,9 @@ def vk_js():
 @register.simple_tag
 def gplus_it(url, title):
     return """
-        <span class="gplus">
+        <div class="gplus">
             <g:plusone size="small" annotation="none"></g:plusone>
-        </span>
+        </div>
     """
 
 @register.simple_tag
@@ -108,9 +108,9 @@ def gplus_js():
 @register.simple_tag
 def gplus_like(url, title):
     return """
-        <span class="gplus_like">
+        <div class="gplus_like">
             <g:plusone size="small"></g:plusone>
-        </span>
+        </div>
     """
 
 share_functions = [tweet_it, buzz_it, vk_it, facebook_it, gplus_it] # Ordering

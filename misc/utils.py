@@ -53,7 +53,7 @@ def render_bbcode(value, nbsp=False):
     value = _render_bbcode(value)\
         .replace('&amp;#91;', '[').replace('&amp;#93;', ']')
     if nbsp:
-        value = re.sub('(^|>)(\s+)', lambda r: r.group(1) + '&nbsp;' * len(r.group(2)), value)
+        value = re.sub('(^|<[^/>][^>]+>)(\s+)', lambda r: r.group(1) + '&nbsp;' * len(r.group(2)), value)
     return mark_safe(value)
 
 def strip_bbcode(value):

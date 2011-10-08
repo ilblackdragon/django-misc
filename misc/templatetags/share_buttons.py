@@ -22,9 +22,9 @@ def current_site_url():
 @register.simple_tag
 def tweet_it(url, title):
     return """
-        <span class="twitter">
+        <div class="twitter">
             <a href="http://twitter.com/home/?%s" title="%s" target="_blank"></a>
-        </span>    
+        </div>    
     """ % (urllib.urlencode({'status': title + (u" " + url + u" #escalibro").encode('utf-8')}), ugettext("Tweet it"))    
 
 @register.simple_tag
@@ -39,17 +39,17 @@ def tweet_like(url, title):
 @register.simple_tag
 def buzz_it(url, title):
     return """
-        <span class="buzz">
+        <div class="buzz">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="http://www.google.com/buzz/post?%s" title="%s" target="_blank"></a>
-        </span>    
+        </div>    
     """ % (ugettext("Post link on Buzz"), urllib.urlencode({'url': url, 'message': title}), ugettext("Buzz it"))
     
 @register.simple_tag
 def facebook_it(url, title):
     return """
-        <span class="facebook">
+        <div class="facebook">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="http://www.facebook.com/sharer.php?%s" title="%s" target="_blank"></a>
-        </span>
+        </div>
     """ % (ugettext("Share link on FaceBook"), urllib.urlencode({'u': url, 't': title}), ugettext("To FaceBook"))
 
 @register.simple_tag
@@ -61,16 +61,16 @@ def facebook_like(url, title):
 @register.simple_tag
 def vk_it(url, title):
     return """
-        <span class="vk">
+        <div class="vk">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="http://vkontakte.ru/share.php?%s" title="%s"></a>
-        </span>
+        </div>
     """ % (ugettext("Share link on VKontakte"), urllib.urlencode({'url': url, 'title': title}), ugettext("To VKontakte"))
 
 @register.simple_tag
 def vk_like(url, title):
     block_id = (hashlib.md5(url + title)).hexdigest()
     return """
-        <span id="vk_like_%s"></span>
+        <div id="vk_like_%s"></div>
         <script type="text/javascript">
             VK.Widgets.Like("vk_like_%s", {type: "button", pageUrl: "%s", pageTitle: "%s", height: "20px"});
         </script>
@@ -91,10 +91,10 @@ def group_buttons(url, title, funcs, block_class):
     url = current_site_url() + url
     url = url.encode('utf-8')
     title = title.encode('utf-8')
-    res = "<span class=\"%s\">" % block_class
+    res = "<div class=\"%s\">" % block_class
     for f in funcs:
         res += f(url, title)
-    res += "</span>"
+    res += "</div>"
     return res
     
 @register.simple_tag

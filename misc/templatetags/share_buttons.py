@@ -83,9 +83,39 @@ def vk_js():
             VK.init({apiId: "%s", onlyWidgets: true});
         </script>
     """ % settings.VKONTAKTE_APPLICATION_ID
-       
-share_functions = [tweet_it, buzz_it, vk_it, facebook_it] # Ordering
-like_functions = [tweet_like, vk_like, facebook_like]
+
+@register.simple_tag
+def gplus_it(url, title):
+    return """
+        <span class="gplus">
+            <g:plusone size="small" annotation="none"></g:plusone>
+        </span>
+    """
+
+@register.simple_tag
+def gplus_js():
+    return """
+        <script type="text/javascript">
+          window.___gcfg = {lang: 'ru'};
+          (function() {
+            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+            po.src = 'https://apis.google.com/js/plusone.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+          })();
+        </script>
+    """
+
+@register.simple_tag
+def gplus_like(url, title):
+    return """
+        <span class="gplus_like">
+            <g:plusone size="small"></g:plusone>
+        </span>
+    """
+
+share_functions = [tweet_it, buzz_it, vk_it, facebook_it, gplus_it] # Ordering
+like_functions = [tweet_like, vk_like, facebook_like, gplus_like]
+js_functions = [gplus_js]
 
 def group_buttons(url, title, funcs, block_class):
     url = current_site_url() + url
@@ -104,4 +134,8 @@ def share_it(url, title):
 @register.simple_tag
 def like_it(url, title):
     return group_buttons(url, title, like_functions, "like_buttons")
-    
+   
+@register.simple_tag
+def share_js():
+    return ' '.join([f() for f in js_functions])
+

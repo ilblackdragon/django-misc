@@ -1,7 +1,7 @@
 
 ###
 ### This file generates automaticly
-### Do not change anything at it
+### Do not change anything in it
 ### Generated from 'needs.cfg'
 ###
 
@@ -397,6 +397,7 @@ style_value_check['dt']['padding.*'] = re.compile(r'^(.*)$', re.IGNORECASE)
 
 
 def clear_html_code(text):
+    text = re.sub('\<\!--.*?--\>', '', text, flags=re.DOTALL)
     soup = BeautifulSoup(text)
     tags = soup.findAll()
     for tag in tags:

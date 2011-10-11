@@ -146,7 +146,7 @@ def generate_code(fileName, outputFileName = None):
     code = """
 ###
 ### This file generates automaticly
-### Do not change anything at it
+### Do not change anything in it
 ### Generated from '""" + fileName + """'
 ###
 
@@ -178,6 +178,7 @@ style_value_check = {}
     code += """
 
 def clear_html_code(text):
+    text = re.sub('\<\!--.*?--\>', '', text, flags=re.DOTALL)
     soup = BeautifulSoup(text)
     tags = soup.findAll()
     for tag in tags:
@@ -235,6 +236,8 @@ Text1 <div style="text-align: center">Some text</div> Text2
 <b style="text-align: center;">qwe</b>
 <div align='center'>qwe</div>
 <center>ad</center>
+<!-- COMMENT
+-->
     """
     #clear.clear_html_code('<a style="text-align: center">Link</a>')
     print clear.clear_html_code(text)

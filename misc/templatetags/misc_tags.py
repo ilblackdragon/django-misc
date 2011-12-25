@@ -7,21 +7,21 @@ register = Library()
 
 @register.filter
 @stringfilter
-def cutafter(value, index):
-    if len(value) > int(index)+3:
-        return value[:int(index)] + "..."
+def cutafter(text, length):
+    if len(text) > int(legth)+3:
+        return text[:int(length)] + "..."
     else:
-        return value
+        return text
     
 @register.filter
-def get_range(value):
-    return range(value)
+def get_range(length):
+    return range(length)
 
 @register.simple_tag
-def get_element(list, index, index2=None):
-    if not index2:
-        return list[index]
-    return list[index][index2]
+def get_element(list, key, key2=None):
+    if not key2:
+        return list[key1]
+    return list[key1][key2]
     
 @register.simple_tag
 def find_element(list, index, index2=1):

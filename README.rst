@@ -61,6 +61,45 @@ Use django-misc
 
 How to use some specific functional will be added later
 
+Template tags
+-------------
+
+- bbcode
+
+{% render_bbcode <text> [<nbsp>] %}
+Rendering bbcode text to html code, i.e. [b]bold[/b] -> <b>bold</b>
+(If optional nbps parameter is set it indicates the need for escaping spaces by &nbsp;)
+
+{% strip_bbcode <text> %}
+Stripping bbcode tags, i.e. [b]bold[/b] -> bold
+
+- html_tags
+
+{% remove_tags <text> %}
+Removes html tags and replace <br/> by \n
+
+- misc_tags
+
+{{ text|cutafter:"<length>" }}
+Cut text after <length> characters, if necessary, and add tree dots (...) to the end
+
+{% get_range <length> %}
+Return simple python range(<length>) list
+
+{% get_element <dict> <key1> [<key2>] %}
+Return a dict value by key1 and, if specified, key2 (i.e. dict[key1][key2])
+
+Views utils
+-----------
+
+Management utils
+----------------
+
+HTML utils
+----------
+
+
+
 Contributing
 ============
 

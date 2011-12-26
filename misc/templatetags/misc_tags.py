@@ -8,7 +8,7 @@ register = Library()
 @register.filter
 @stringfilter
 def cutafter(text, length):
-    if len(text) > int(legth)+3:
+    if len(text) > int(length)+3:
         return text[:int(length)] + "..."
     else:
         return text

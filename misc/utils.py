@@ -2,14 +2,12 @@
 
 import string
 import re
-from postmarkup import render_bbcode as _render_bbcode, strip_bbcode as _strip_bbcode
 
 from django.conf import settings
 from django.contrib.auth import SESSION_KEY, BACKEND_SESSION_KEY, load_backend
 from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.utils.encoding import smart_str, force_unicode, iri_to_uri
-from django.utils.safestring import mark_safe
 
 
 class HttpResponseReload(HttpResponse):
@@ -38,32 +36,10 @@ class HttpResponseReload(HttpResponse):
 def custom_spaceless(value):
     """
     Remove spaces between tags and leading spaces in lines.
-    It works buggly for <pre> tag.
+    WARNING: It works buggly for <pre> tag.
     """
     return re.sub('(\n|\r|(>))[ \t]+((?(2)<))', '\\1\\3', force_unicode(value))
 #        .replace('\n', '').replace('\r', '')
-
-def render_bbcode(value, nbsp=False):
-    """
-    Generates (X)HTML from string with BBCode "markup".
-    By using the postmark lib from:
-    @see: http://code.google.com/p/postmarkup/
-
-    """
-    value = _render_bbcode(value)\
-        .replace('&amp;#91;', '[').replace('&amp;#93;', ']')
-    if nbsp:
-        value = re.sub('(^|<[^/>][^>]*>)(\s+)', lambda r: r.group(1) + '&nbsp;' * len(r.group(2)), value)
-    return mark_safe(value)
-
-def strip_bbcode(value):
-    """
-    Strips BBCode tags from a string
-    By using the postmark lib from:
-    @see: http://code.google.com/p/postmarkup/
-
-    """
-    return mark_safe(_strip_bbcode(value))
 
 def str_to_class(string):
     mod_str, cls_str = string.rsplit('.', 1)

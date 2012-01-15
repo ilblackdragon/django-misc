@@ -37,14 +37,6 @@ def tweet_like(url, title):
     """ % ('text=' + title + ' %23escalibro&amp;' + urllib.urlencode({'url': url}))
     
 @register.simple_tag
-def buzz_it(url, title):
-    return """
-        <div class="buzz">
-            <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="http://www.google.com/buzz/post?%s" title="%s" target="_blank"></a>
-        </div>    
-    """ % (ugettext("Post link on Buzz"), urllib.urlencode({'url': url, 'message': title}), ugettext("Buzz it"))
-    
-@register.simple_tag
 def facebook_it(url, title):
     return """
         <div class="facebook">
@@ -113,7 +105,7 @@ def gplus_like(url, title):
         </div>
     """
 
-share_functions = [tweet_it, buzz_it, vk_it, facebook_it, gplus_it] # Ordering
+share_functions = [tweet_it, vk_it, facebook_it, gplus_it] # Ordering
 like_functions = [tweet_like, vk_like, facebook_like, gplus_like]
 js_functions = [gplus_js]
 

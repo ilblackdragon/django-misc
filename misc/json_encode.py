@@ -1,7 +1,7 @@
 from django.core.serializers.json import DateTimeAwareJSONEncoder
 from django.db import models
-from django.template.loader import get_template
-from django.template import Context
+from django.template.loader import render_to_string
+from django.template.response import TemplateResponse
 from django.utils.encoding import force_unicode
 from django.utils import simplejson as json
 
@@ -52,7 +52,7 @@ def json_encode(data):
             ret[f.attname] = _any(getattr(data, f.attname))
         # And additionally encode arbitrary properties that had been added.
         fields = dir(data.__class__) + ret.keys()
-        add_ons = [k for k in dir(data) if k not in fields]
+        add_ons = [k for k in dir(data) if k not in fields if k != '_state']
         for k in add_ons:
             ret[k] = _any(getattr(data, k))
         return ret
@@ -76,8 +76,58 @@ def json_response(data):
     return HttpResponse(json_encode(data), content_type='application/json')
 
 def json_template(data, template_name, template_context):
-    t = get_template(template_name)
-    html = t.render(Context(template_context))
+    """Old style, use JSONTemplateResponse instead of this.
+    """
+    html = render_to_string(template_name, template_context)
     data = data or {}
     data['html'] = html
     return HttpResponse(json_encode(data), content_type='application/json')
+
+
+class JSONTemplateResponse(TemplateResponse):
+    
+    def __init__(self, *args, **kwargs):
+        """There are extra arguments in kwargs:
+            `data` dict for extra JSON data
+            `html_varname` string for specify where rendered template will be
+                stored, by default "html"
+
+        Example:
+        
+            Py-code:
+            return JSONTemplateResponse(request, template_name, template_context,
+                data={'status': 'ok', 'user': request.user})
+
+            This line will create response:
+            {
+                "status": "ok",
+                "user": {
+                    "username": "frol",
+                    "first_name": "",
+                    "last_name": "",
+                    "is_active": true,
+                    "email": "qq@qq.qq",
+                    "is_superuser": true,
+                    "is_staff": true,
+                    "last_login": "2012-01-24 18:59:55",
+                    "password": "sha1$fffff$1b4d68b3731ec29a797d61658c716e2400000000",
+                    "id": 1,
+                    "date_joined": "2011-07-09 05:57:21"
+                },
+                "html": "<rendered HTML>"
+            }
+            
+        WARNING: Be carefull with serialization of model objects. As you can
+        see in example, password hash has been serialized.
+        """
+        if 'content_type' not in kwargs:
+            kwargs['content_type'] = 'application/json'
+        self.data = kwargs.pop('data', dict())
+        self.html_varname = kwargs.pop('html_varname', 'html')
+        super(JSONTemplateResponse, self).__init__(*args, **kwargs)
+
+    @property
+    def rendered_content(self):
+        html = super(JSONTemplateResponse, self).rendered_content
+        self.data[self.html_varname] = html
+        return json_encode(self.data)

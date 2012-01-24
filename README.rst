@@ -1,5 +1,5 @@
 django-misc
-##############
+===========
 
 **Django misc** is module with set of utilities, decorators, templatetags that everybody uses at least once in project.
 So here they all in one application, that will grow to aggregate all usefull utilities for Django.
@@ -64,48 +64,51 @@ How to use some specific functional will be added later
 Template tags
 -------------
 
-- {% load bbcode %} ::
-
-    {% render_bbcode <text> [<nbsp>] %}
-Rendering bbcode text to html code, i.e. [b]bold[/b] -> <b>bold</b>
-
-(If optional nbps parameter is set it indicates the need for escaping spaces by &nbsp;)
+{% load html_tags %}
+~~~~~~~~~~~~~~~~~~~~
 
 ::
-    {% strip_bbcode <text> %}
-Stripping bbcode tags, i.e. [b]bold[/b] -> bold
 
-- {% load html_tags %}
-
-::
     {% remove_tags <text> %}
 Removes html tags and replace <br/> by \n
 
-- {% load misc_tags %}
+{% load misc_tags %}
+~~~~~~~~~~~~~~~~~~~~
 
 ::
+
     {{ text|cutafter:"<length>" }}
 Cut text after <length> characters and, if necessary, add tree dots (...) to the end
 
 ::
+
     {% get_range <length> %}
 Return simple python range(<length>) list
 
 ::
+
     {% get_element <dict> <key1> [<key2>] %}
 Return a dict value by key1 and, if specified, key2 (i.e. dict[key1][key2])
 
 json_encode
-===========
+-----------
 
-- JSONTemplateResponse - works like TemplateResponse, but return JSON response
+JSONTemplateResponse
+~~~~~~~~~~~~~~~~~~~~
+
+It works like TemplateResponse, but return JSON response
 
 in view.py::
+
     ...
     return JSONTemplateResponse(request, template_name, template_context,
         data={'status': 'ok', 'user': request.user})
 
-This line will create response::
+
+This line will create response
+
+::
+
     {
         "status": "ok",
         "user": {
@@ -123,20 +126,33 @@ This line will create response::
         },
         "html": "<rendered HTML>"
     }
+
 WARNING: Be carefull with serialization of model objects. As you can see in example, password hash has been serialized.
 
-- json_encode - Serialize python object into JSON string.
+json_encode
+~~~~~~~~~~~
+
+json_encode(data)
+
+Serialize python object into JSON string.
     
-    The main issues with django's default json serializer is that properties that
-    had been added to an object dynamically are being ignored (and it also has 
-    problems with some models).
+The main issues with django's default json serializer is that properties that
+had been added to an object dynamically are being ignored (and it also has 
+problems with some models).
 
+json_response
+~~~~~~~~~~~~~
 
-- json_response - Serialize python object into JSON string and return HttpResponse
-    with correct content_type (application/json)
+json_response(data)
 
-- json_template - Render template, add it for serialization data,
-    serialize data into JSON string and return HttpResponse with correct content_type.
+Serialize python object into JSON string and return HttpResponse with correct content_type (application/json)
+
+json_template
+~~~~~~~~~~~~~
+
+json_template(data, template_name, template_context)
+
+Render template, add it for serialization data, serialize data into JSON string and return HttpResponse with correct content_type.
 
 
 Views utils

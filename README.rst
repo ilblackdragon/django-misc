@@ -70,6 +70,7 @@ Template tags
 ::
 
     {% remove_tags <text> %}
+
 Removes html tags and replace <br/> by \n
 
 {% load misc_tags %}
@@ -78,16 +79,19 @@ Removes html tags and replace <br/> by \n
 ::
 
     {{ text|cutafter:"<length>" }}
+
 Cut text after <length> characters and, if necessary, add tree dots (...) to the end
 
 ::
 
     {% get_range <length> %}
+
 Return simple python range(<length>) list
 
 ::
 
     {% get_element <dict> <key1> [<key2>] %}
+
 Return a dict value by key1 and, if specified, key2 (i.e. dict[key1][key2])
 
 json_encode
@@ -160,9 +164,11 @@ useful_constants
 ~~~~~~~~~~~~~~~~
 
 If you want use True, False, None in django templates, add line to TEMPLATE_CONTEXT_PROCESSORS in settings.py::
+
     'misc.context_processors.useful_constants',
 
 Example, A = True, B = False, C = None, D - undefined::
+
     {% if A == True %}A is True{% endif %}
     {% if A == False %}A is False{% endif %}
     {% if A == None %}A is None{% endif %}
@@ -177,6 +183,7 @@ Example, A = True, B = False, C = None, D - undefined::
     {% if D == None %}D is None{% endif %}
 
 Will produce output::
+
     A is True
     B is False
     C is None

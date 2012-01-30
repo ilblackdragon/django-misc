@@ -156,6 +156,9 @@ Render template, add it for serialization data, serialize data into JSON string 
 Context processors
 ------------------
 
+useful_constants
+~~~~~~~~~~~~~~~~
+
 If you want use True, False, None in django templates, add line to TEMPLATE_CONTEXT_PROCESSORS in settings.py::
     'misc.context_processors.useful_constants',
 

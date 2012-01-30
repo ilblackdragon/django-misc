@@ -172,12 +172,15 @@ Example, A = True, B = False, C = None, D - undefined::
     {% if A == True %}A is True{% endif %}
     {% if A == False %}A is False{% endif %}
     {% if A == None %}A is None{% endif %}
+
     {% if B == True %}B is True{% endif %}
     {% if B == False %}B is False{% endif %}
     {% if B == None %}B is None{% endif %}
+
     {% if C == True %}C is True{% endif %}
     {% if C == False %}C is False{% endif %}
     {% if C == None %}C is None{% endif %}
+
     {% if D == True %}D is True{% endif %}
     {% if D == False %}D is False{% endif %}
     {% if D == None %}D is None{% endif %}

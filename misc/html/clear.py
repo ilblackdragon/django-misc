@@ -405,7 +405,8 @@ style_value_check['dt']['padding.*'] = re.compile(r'^(.*)$', re.IGNORECASE)
 
 
 def clear_html_code(text):
-    text = re.sub('\<\!--.*?--\>', '', text, flags=re.DOTALL)
+    text_re = re.compile('\<\!--.*?--\>', flags=re.DOTALL)
+    text = text_re.sub('', text)
     soup = BeautifulSoup(text)
     tags = soup.findAll()
     for tag in tags:

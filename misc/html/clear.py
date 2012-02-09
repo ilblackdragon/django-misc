@@ -8,7 +8,7 @@
 import re
 from BeautifulSoup import BeautifulSoup
 
-tag_check = re.compile(r'^(a|blockquote|p|u|b|i|em|strike|strong|ul|ol|li|sub|sup|br|hr|object|param|embed|h1|h2|h3|h4|h5|h6|center|address|pre|iframe|img|span|table|tr|td|tname|tbody|div|dd|dt)$', re.IGNORECASE)
+tag_check = re.compile(r'^(a|blockquote|p|u|b|i|em|strike|strong|ul|ol|li|sub|sup|br|hr|object|param|embed|h1|h2|h3|h4|h5|h6|center|address|pre|iframe|img|font|span|table|tr|td|tname|tbody|div|dd|dt)$', re.IGNORECASE)
 attr_check = {}
 attr_value_check = {}
 style_check = {}
@@ -125,6 +125,9 @@ attr_value_check['img']['style'] = re.compile(r'^(width|height|text-align|margin
 attr_value_check['img']['src'] = re.compile(r'^(.*)$', re.IGNORECASE)
 attr_value_check['img']['alt'] = re.compile(r'^(.*)$', re.IGNORECASE)
 attr_value_check['img']['class'] = re.compile(r'^(img_(left|right))$', re.IGNORECASE)
+attr_check['font'] = re.compile(r'^(style)$', re.IGNORECASE)
+attr_value_check['font'] = {}
+attr_value_check['font']['style'] = re.compile(r'^(text-align|margin.*|padding.*)$', re.IGNORECASE)
 attr_check['span'] = re.compile(r'^(width|height|align|style)$', re.IGNORECASE)
 attr_value_check['span'] = {}
 attr_value_check['span']['width'] = re.compile(r'^(\d+)$', re.IGNORECASE)
@@ -331,6 +334,11 @@ style_value_check['img']['height'] = re.compile(r'^(\d+)$', re.IGNORECASE)
 style_value_check['img']['text-align'] = re.compile(r'^(center|left|right|justify)$', re.IGNORECASE)
 style_value_check['img']['margin.*'] = re.compile(r'^(.*)$', re.IGNORECASE)
 style_value_check['img']['padding.*'] = re.compile(r'^(.*)$', re.IGNORECASE)
+style_check['font'] = re.compile(r'^(text-align|margin.*|padding.*)$', re.IGNORECASE)
+style_value_check['font'] = {}
+style_value_check['font']['text-align'] = re.compile(r'^(center|left|right|justify)$', re.IGNORECASE)
+style_value_check['font']['margin.*'] = re.compile(r'^(.*)$', re.IGNORECASE)
+style_value_check['font']['padding.*'] = re.compile(r'^(.*)$', re.IGNORECASE)
 style_check['span'] = re.compile(r'^(width|height|text-align|margin.*|padding.*)$', re.IGNORECASE)
 style_value_check['span'] = {}
 style_value_check['span']['width'] = re.compile(r'^(\d+)$', re.IGNORECASE)
@@ -397,8 +405,7 @@ style_value_check['dt']['padding.*'] = re.compile(r'^(.*)$', re.IGNORECASE)
 
 
 def clear_html_code(text):
-    text_re = re.compile('\<\!--.*?--\>', flags=re.DOTALL)
-    text = text_re.sub('', text)
+    text = re.sub('\<\!--.*?--\>', '', text, flags=re.DOTALL)
     soup = BeautifulSoup(text)
     tags = soup.findAll()
     for tag in tags:

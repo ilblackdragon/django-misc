@@ -107,8 +107,8 @@ def gplus_like(request, url, title):
 
 share_functions = [tweet_it, vk_it, facebook_it, gplus_it] # Ordering
 like_functions = [tweet_like, vk_like, facebook_like, gplus_like]
-share_js_functions = [vk_js, gplus_js]
-like_js_functions = [gplus_js]
+share_js_functions = [gplus_js]
+like_js_functions = [vk_js, gplus_js]
 
 def group_buttons(request, url, title, funcs, block_class):
     url = current_site_url() + url

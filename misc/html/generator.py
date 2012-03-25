@@ -228,15 +228,25 @@ if __name__ == "__main__":
 <p>
 	<span class="Apple-style-span" style="color: rgb(68, 68, 68); font-family: Tahoma, 'Trebuchet MS', 'Arial Narrow'; line-height: 20px; "><img alt="asdad" width="12a0" height=130 src="http://dl.dropbox.com/u/116385/Screenshots/pzu3w~8_dtjp.png" style="border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-style: initial; border-color: initial; "></span>
 </p>
+
 <iframe title="YouTube video player" class="youtube-player" type="text/html" width="480" height="390" src="http://www.youtube.com/embed/mK8Rnqch08c" frameborder="0"></iframe>
+
 <iframe src="http://player.vimeo.com/video/17644530" width="400" height="225" frameborder="0"></iframe><p><a href="http://vimeo.com/17644530">Health</a> from <a href="http://vimeo.com/hayleymorris">Hayley Morris</a> on <a href="http://vimeo.com">Vimeo</a>.</p>
+
 <object width="480" height="385"><param name="movie" value="http://wwwpyoutube.com/e/vvmqCXR-tiA"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/e/vvmqCXR-tiA" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+
 <iframe src="http://vkontakte.ru/video_ext.php?oid=14071319&id=156556674&hash=2a4233a33890ef11&hd=1" width="607" height="360" frameborder="0"></iframe>
+
 Text1 <div style="text-align: center">Some text</div> Text2
+<div align='center'>Centered</div>
+<center>Centered</center>
 <a style="text-align:center;">Link</a>
-<b style="text-align: center;">qwe</b>
-<div align='center'>qwe</div>
-<center>ad</center>
+<b style="text-align: center;">Bold</b>
+<span style="font-weight: bold">Bold</span>
+<i>Italic</i>
+<span style="font-style:italic;">Italic</span>
+<strike>Strike</strike>
+<span style="text-decoration: line-through;">Strike</span>
 <font color="red">font test</font>
 <!-- COMMENT
 -->

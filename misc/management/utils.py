@@ -7,15 +7,17 @@ Requires lockfile - (pip install lockfile)
 Author: Ross Lawley
 """
 
-import time
 import logging
+import os
+import time
 
 from lockfile import FileLock, AlreadyLocked, LockTimeout
 from django.conf import settings
 
 # Lock timeout value - how long to wait for the lock to become available.
 # Default behavior is to never wait for the lock to be available (fail fast)
-LOCK_WAIT_TIMEOUT = getattr(settings, "DEFAULT_LOCK_WAIT_TIMEOUT", -1)
+LOCK_WAIT_TIMEOUT = getattr(settings, 'DEFAULT_LOCK_WAIT_TIMEOUT', -1)
+LOCK_ROOT = getattr(settings, 'LOCK_ROOT', '')
 
 def handle_lock(handle):
     """
@@ -40,7 +42,7 @@ def handle_lock(handle):
         logger.debug("-" * 72)
         
         lock_name = self.__module__.split('.').pop()
-        lock = FileLock(lock_name)
+        lock = FileLock(os.path.join(LOCK_ROOT, lock_name))
         
         logger.debug("%s - acquiring lock..." % lock_name)
         try:

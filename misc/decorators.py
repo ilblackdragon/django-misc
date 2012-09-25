@@ -1,5 +1,6 @@
 from functools import update_wrapper, wraps
 
+from django.core.cache import cache
 from django.utils.decorators import available_attrs
 from django.views.generic.simple import direct_to_template
 
@@ -46,3 +47,39 @@ def receiver(signal, **kwargs):
         signal.connect(func, **kwargs)
         return func
     return _decorator
+
+def cached(cache_key, invalidate_signals, timeout=None):
+    def decorator(function):
+        def invalidate(sender, *args, **kwargs):
+            """
+            Simple cache invalidate fallback function..
+            """
+            cache.delete(_cache_key)
+
+        def wrapped(*args, **kwargs):
+            if callable(cache_key):
+                _cache_key = cache_key(*args, **kwargs)
+            else:
+                _cache_key = cache_key
+            result = cache.get(_cache_key)
+            if result is None:
+                result = function(*args, **kwargs)
+                if _cache_key is not None:
+                    cache.set(_cache_key, result, timeout)
+            return result
+
+        wrapped.invalidate = invalidate
+        for signal, sender, _invalidate in invalidate_signals:
+            # weak - Django stores signal handlers as weak references by default. Thus, if your
+            # receiver is a local function, it may be garbage collected. To prevent this, pass
+            # weak=False when you call the signal`s connect() method.
+            if _invalidate is None:
+                if callable(cache_key):
+                    continue
+                _invalidate = wrapped.invalidate
+            signal.connect(_invalidate, sender=sender, weak=False)
+        return wrapped
+    return decorator
+
+def cached_property(cache_key=None, timeout=None, invalidate_signals=None):
+    pass

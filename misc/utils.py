@@ -16,15 +16,12 @@ class HttpResponseReload(HttpResponse):
 
     example:
 
-    def simple_view(request):
-        if request.POST:
-            form = CommentForm(request.POST):
-            if form.is_valid():
-                form.save()
-                return HttpResponseReload(request)
-        else:
-            form = CommentForm()
-        return render_to_response('some_template.html', {'form': form})
+    def simple_view(request, form_class=CommentForm, template_name='some_template.html'):
+        form = CommentForm(request.POST or None)
+        if form.valid():
+            form.save()
+            return HttpResponseReload(request)
+        return render(template_name, {'form': form})
     """
     status_code = 302
 
@@ -41,8 +38,11 @@ def custom_spaceless(value):
     return re.sub('(\n|\r|(>))[ \t]+((?(2)<))', '\\1\\3', force_unicode(value))
 #        .replace('\n', '').replace('\r', '')
 
-def str_to_class(string):
-    mod_str, cls_str = string.rsplit('.', 1)
+def str_to_class(class_name):
+    """
+    Returns a class based on class name    
+    """
+    mod_str, cls_str = class_name.rsplit('.', 1)
     mod = __import__(mod_str, globals(), locals(), [''])
     cls = getattr(mod, cls_str)
     return cls

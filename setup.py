@@ -27,10 +27,10 @@ META_DATA = dict(
     version = VERSION,
     description = read('DESCRIPTION'),
     long_description = read('README.rst'),
-    license='GNU LGPL',
+    license='MIT',
 
-    author = "Ilya Polosukhin & Vlad Frolov",
-    author_email = "ilblackdragon@gmail.com, frolvlad@gmail.com",
+    author = "Illia Polosukhin, Vlad Frolov",
+    author_email = "ilblackdragon@gmail.com",
 
     url = "http://github.com/ilblackdragon/django-misc.git",
 

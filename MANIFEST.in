@@ -1,2 +1,2 @@
-recursive-include django-misc *
-exclude *.pyc *.orig
+include LICENSE
+recursive-include misc *

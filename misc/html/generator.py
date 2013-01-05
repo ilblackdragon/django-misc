@@ -240,7 +240,12 @@ if __name__ == "__main__":
 Text1 <div style="text-align: center">Some text</div> Text2
 <div align='center'>Centered</div>
 <center>Centered</center>
-<a style="text-align:center;">Link</a>
+
+<a href="https://escalibro.com/" style="text-align:center;">Link</a>
+<a href="http://escalibro.com/" style="text-align:center;color: rgb(10,10,10)">Link2</a>
+<a target="_blank" href="javascript:stuff">test1</a>
+<a target="_blank" href="data:text/html, <script>alert(window.opener.document.cookie)</script>">test2</a>
+
 <b style="text-align: center;">Bold</b>
 <span style="font-weight: bold">Bold</span>
 <i>Italic</i>
@@ -251,5 +256,5 @@ Text1 <div style="text-align: center">Some text</div> Text2
 <!-- COMMENT
 -->
     """
-    #clear.clear_html_code('<a style="text-align: center">Link</a>')
     print(clear.clear_html_code(text))
+

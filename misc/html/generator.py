@@ -245,6 +245,10 @@ Text1 <div style="text-align: center">Some text</div> Text2
 <a href="http://escalibro.com/" style="text-align:center;color: rgb(10,10,10)">Link2</a>
 <a target="_blank" href="javascript:stuff">test1</a>
 <a target="_blank" href="data:text/html, <script>alert(window.opener.document.cookie)</script>">test2</a>
+<img src="javascript:alert(1);" />
+<img src="https://escalibro.com/logo.png">
+<img src="http://escalibro.com/logo.png">
+<img src="ftp://escalibro.com/logo.png">
 
 <b style="text-align: center;">Bold</b>
 <span style="font-weight: bold">Bold</span>

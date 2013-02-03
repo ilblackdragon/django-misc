@@ -45,7 +45,7 @@ class BaseCommand(base.BaseCommand):
     This is base class, use it as class to inherit from your commands.
 
     Note, that meta class magic is used for usability - to use this class you don't need to change 
-    anything in your code except import BaseClass from different place.
+    anything in your code except import BaseCommand class from different place.
     """
     
     __meta__ = BaseCommandMeta
@@ -53,7 +53,7 @@ class BaseCommand(base.BaseCommand):
     USE_LOCK = True
     HANDLE_EXCEPTIONS = True
     EMAIL_EXCEPTIONS = True
-    OUTPUT_LOG = False
+    OUTPUT_LOG = True
 
     def handle(self, *args, **kwargs):
         pass

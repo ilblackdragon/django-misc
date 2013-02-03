@@ -260,6 +260,33 @@ Useful for creating filters.
 Management utils
 ----------------
 
+BaseCommand
+~~~~~~~~~~~
+
+management.command.BaseCommand class
+
+Use it instead of django.core.management.base.BaseCommand 
+It will decorate handle() method of your command by next functionality:
+- Logging, that redirects stdout to a log file
+- Lock to allow only one command at a time
+- Exception handling with email notification about crash of the command (very important for cron jobs, from my excperience)
+
+Set of options are available for configuration in settings.py:
+- LOCK_ROOT - configure root directory for lock files
+- COMMAND_LOCK_ROOT - configure root directory for lock files only for commands (optional, if LOCK_ROOT must be used for something else)
+- LOG_ROOT - configure root directory for log files 
+- COMMAND_LOG_ROOT - configure root directory for log files only for commands (optional, if LOG_ROOT must be used for something else)
+- COMMAND_USE_LOCK - configure if locks should be used (default True)
+- COMMAND_HANDLE_EXCEPTIONS - configure if exceptions should be handled (default True)
+- COMMAND_EMAIL_EXCEPTIONS - report about exceptions in command via email to administrators (default True, works only when not DEBUG)
+
+Additional configurations can be used for each particular command (defined as class properties):
+- USE_LOCK - use locks for this commands (default True)
+- HANDLE_EXCEPTIONS - handle exceptions for this command  (default True)
+- EMAIL_EXCEPTIONS - email if exception occured in this command (default True)
+- OUTPUT_LOG - redirect output to log file (default True)
+ 
+
 handle_lock
 ~~~~~~~~~~~
 

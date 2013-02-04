@@ -262,7 +262,7 @@ Management utils
 BaseCommand
 ~~~~~~~~~~~
 
-``management.command.BaseCommand``
+``management.commands.BaseCommand``
 
 Use this class instead of ``django.core.management.base.BaseCommand``.
 It will decorate ``handle(self, args, options)`` method of your command by next functionality:
@@ -287,7 +287,6 @@ Additional configurations can be used for each particular command (defined as cl
 - HANDLE_EXCEPTIONS - handle exceptions for this command  (default True)
 - EMAIL_EXCEPTIONS - email if exception occured in this command (default True)
 - OUTPUT_LOG - redirect output to log file (default True)
- 
 
 handle_lock
 ~~~~~~~~~~~
@@ -300,6 +299,11 @@ sync_site
 ~~~~~~~~~
 
 sync_site is post syncdb event, that will sync current Site object with settings like SITE_NAME and SITE_DOMAIN
+
+create_app
+~~~~~~~~~~
+
+Create application in the current project in the ``apps/`` subfolder.
 
 HTML utils
 ----------

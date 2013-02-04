@@ -47,3 +47,4 @@ class ProjectCommand(Command):
 
     def handle_label(self, app_name, **options):
         super(ProjectCommand, self).handle_label(app_name, self.project_directory, **options)
+

@@ -5,32 +5,30 @@ import traceback
 
 from lockfile import FileLock
 
-try:
-    from django.core.management import base
-    from django.conf import settings
-except ImportError:
-    base = object
-    base.BaseCommand = object
-    settings = {}
+from django.core.management import base
+from django.conf import settings
 
 try:
     import mailer
 except ImportError:
     from django.core import mail as mailer
 
-
 class BaseCommandMeta(type):
-    
-    def __new__(cls, name, bases, dct):
+
+    def __init__(cls, name, bases, dct):
         """
         Swap handle and _handle methods in the inherited classes from BaseCommand and 
         add COMMAND_NAME field (if it's not present) with name of file that inherited class is
         """
-        print(cls, name, bases, dct)
-        if 'BaseCommand' in bases and 'handle' in dct and '_handle' in dct:
-            dct['handle'], dct['_handle'] = dct['_handle'], dct['handle']
-            dct['COMMAND_NAME'] = name
-        
+        super(BaseCommandMeta, cls).__init__(name, bases, dct)
+        base_command_class = None
+        for base in bases:
+            if base.__module__ == __name__ and base.__name__ == "BaseCommand":
+                base_command_class = base
+        if base_command_class is not None and 'handle' in dct:
+            cls.handle, cls._handle = base_command_class._handle, cls.handle
+            if 'COMMAND_NAME' not in dct and '__module__' in dct:
+                cls.COMMAND_NAME = cls.__module__.split('.')[-1]
 
 LOCK_ROOT = getattr(settings, 'LOCK_ROOT', None)
 LOG_ROOT = getattr(settings, 'LOG_ROOT', None)

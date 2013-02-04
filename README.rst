@@ -21,7 +21,6 @@ Here you'll find:
 * Template tags that provide like and share for social sevices
 
 
-
 Requirements
 ==============
 
@@ -106,7 +105,7 @@ JSONTemplateResponse
 
 It works like TemplateResponse, but return JSON response
 
-in view.py::
+in view.py: ::
 
     ...
     return JSONTemplateResponse(request, template_name, template_context, data={'status': 'ok', 'user': request.user})
@@ -139,7 +138,7 @@ WARNING: Be carefull with serialization of model objects. As you can see in exam
 json_encode
 ~~~~~~~~~~~
 
-json_encode(data)
+``json_encode(data)``
 
 Serialize python object into JSON string.
     
@@ -150,14 +149,14 @@ problems with some models).
 json_response
 ~~~~~~~~~~~~~
 
-json_response(data)
+``json_response(data)``
 
 Serialize python object into JSON string and return HttpResponse with correct content_type (application/json)
 
 json_template
 ~~~~~~~~~~~~~
 
-json_template(data, template_name, template_context)
+``json_template(data, template_name, template_context)``
 
 Render template, add it for serialization data, serialize data into JSON string and return HttpResponse with correct content_type.
 
@@ -167,11 +166,11 @@ Context processors
 useful_constants
 ~~~~~~~~~~~~~~~~
 
-If you want use True, False, None in django templates, add line to TEMPLATE_CONTEXT_PROCESSORS in settings.py::
+If you want use True, False, None in django templates, add line to TEMPLATE_CONTEXT_PROCESSORS in settings.py: ::
 
     'misc.context_processors.useful_constants',
 
-Example, A = True, B = False, C = None, D - undefined::
+Example, A = True, B = False, C = None, D - undefined: ::
 
     {% if A == True %}A is True{% endif %}
     {% if A == False %}A is False{% endif %}
@@ -189,7 +188,7 @@ Example, A = True, B = False, C = None, D - undefined::
     {% if D == False %}D is False{% endif %}
     {% if D == None %}D is None{% endif %}
 
-Will produce output::
+Will produce output: ::
 
     A is True
     B is False
@@ -203,16 +202,16 @@ Views utils
 server_error
 ~~~~~~~~~~~~
 
-misc.views.server_error(request)
+``misc.views.server_error(request)``
 
-Put server_error as your handler500 in urls.py and add templates/errors/500.html ::
+Put server_error as your handler500 in urls.py and add templates/errors/500.html: ::
 
     handler500 = 'misc.views.server_error'
 
 decorator to_template or render_to
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-to_template(template_name=None)
+``to_template(template_name=None)``
 
 Decorator to simply call direct_to_template: ::
     
@@ -231,9 +230,9 @@ Decorator to simply call direct_to_template: ::
 HttpResponseReload
 ~~~~~~~~~~~~~~~~~~
 
-utils.HttpResponseReload(request)
+``utils.HttpResponseReload(request)``
 
-Reload current page. ::
+Reloads current page: ::
 
     def simple_view(request, form_class=CommentForm, template_name='some_template.html'):
         form = CommentForm(request.POST or None)
@@ -245,14 +244,14 @@ Reload current page. ::
 str_to_class
 ~~~~~~~~~~~~
 
-utils.str_to_class(class_name)
+``utils.str_to_class(class_name)``
 
 Returns a class based on class name
 
 get_alphabets
 ~~~~~~~~~~~~~
 
-utils.get_alphabets()
+``utils.get_alphabets()``
 
 Returns pair of english and russian alphabets.
 Useful for creating filters.
@@ -263,15 +262,17 @@ Management utils
 BaseCommand
 ~~~~~~~~~~~
 
-management.command.BaseCommand class
+``management.command.BaseCommand``
 
-Use it instead of django.core.management.base.BaseCommand 
-It will decorate handle() method of your command by next functionality:
+Use this class instead of ``django.core.management.base.BaseCommand``.
+It will decorate ``handle(self, args, options)`` method of your command by next functionality:
+
 - Logging, that redirects stdout to a log file
 - Lock to allow only one command at a time
 - Exception handling with email notification about crash of the command (very important for cron jobs, from my excperience)
 
 Set of options are available for configuration in settings.py:
+
 - LOCK_ROOT - configure root directory for lock files
 - COMMAND_LOCK_ROOT - configure root directory for lock files only for commands (optional, if LOCK_ROOT must be used for something else)
 - LOG_ROOT - configure root directory for log files 
@@ -281,6 +282,7 @@ Set of options are available for configuration in settings.py:
 - COMMAND_EMAIL_EXCEPTIONS - report about exceptions in command via email to administrators (default True, works only when not DEBUG)
 
 Additional configurations can be used for each particular command (defined as class properties):
+
 - USE_LOCK - use locks for this commands (default True)
 - HANDLE_EXCEPTIONS - handle exceptions for this command  (default True)
 - EMAIL_EXCEPTIONS - email if exception occured in this command (default True)
@@ -290,7 +292,7 @@ Additional configurations can be used for each particular command (defined as cl
 handle_lock
 ~~~~~~~~~~~
 
-management.handle_lock(handle)
+``management.handle_lock(handle)``
 
 Decorate the handle method with a file lock to ensure there is only ever one process running at any one time.
 
@@ -302,22 +304,7 @@ sync_site is post syncdb event, that will sync current Site object with settings
 HTML utils
 ----------
 
-clear_html_code
-~~~~~~~~~~~~~~~
-
-html.clear.clear_html_code(text)
-
-Clean up HTML code from tags that are not allowed. Structure of allowed tags can be found at needs.cfg.
-clear.py is generated by html/generator.py with needs.cfg as config file
-
-generator
-~~~~~~~~~
-
-./generator.py
-
-Will generate clear.py source code file, according to rules specified at needs.cfg.
-Example of simpler configuration file can be found in example.cfg
-
+Moved to separate project https://github.com/ProstoKSI/html-cleaner
 
 Contributing
 ============
@@ -327,6 +314,6 @@ Development of django-misc happens at github: https://github.com/ilblackdragon/d
 License
 ============
 
-Copyright (C) 2009-2013 Illia Polosukhin, Vladyslav Frolov
+Copyright (C) 2009-2013 Illia Polosukhin, Vladyslav Frolov.
 This program is licensed under the MIT License (see LICENSE)
- 
+

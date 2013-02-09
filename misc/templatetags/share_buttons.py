@@ -3,12 +3,22 @@
 import urllib
 import hashlib
 
-from django.template import Library
-from django.utils.translation import get_language_from_request, ugettext
-from django.contrib.sites.models import Site
 from django.conf import settings
+from django.contrib.sites.models import Site
+from django.utils.translation import get_language_from_request, ugettext
+
+if 'coffin' in settings.INSTALLED_APPS:
+    from coffin.template import Library
+    from jinja2 import Markup as mark_safe
+else:
+    from django.template import Library
+    from django.utils.safestring import mark_safe
 
 register = Library()
+
+if 'coffin' in settings.INSTALLED_APPS:
+    register.simple_tag = register.object
+
 
 def current_site_url():
     """Returns fully qualified URL (no trailing slash) for the current site."""
@@ -21,42 +31,42 @@ def current_site_url():
 
 @register.simple_tag
 def tweet_it(request, url, title):
-    return """
+    return mark_safe("""
         <div class="twitter">
             <a href="http://twitter.com/home/?%s" title="%s" target="_blank"></a>
         </div>    
-    """ % (urllib.urlencode({'status': title + (u" " + url + u" #escalibro").encode('utf-8')}), ugettext("Tweet it"))    
+    """ % (urllib.urlencode({'status': title + (u" " + url + u" #escalibro").encode('utf-8')}), ugettext("Tweet it")))
 
 @register.simple_tag
 def tweet_like(request, url, title):
-    return """
+    return mark_safe("""
         <iframe allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" class="twitter-share-button twitter-count-horizontal" 
                 src="https://platform.twitter.com/widgets/tweet_button.html?_=1302382076454&amp;count=horizontal&amp;lang=en&amp;via=escalibro&amp;%s" 
                 style="width: 110px; height: 20px; " title="Twitter For Websites: Tweet Button"></iframe>
         <script type="text/javascript" src="https://platform.twitter.com/widgets.js"></script>
-    """ % ('text=' + title + ' %23escalibro&amp;' + urllib.urlencode({'url': url}))
+    """ % ('text=' + title + ' %23escalibro&amp;' + urllib.urlencode({'url': url})))
     
 @register.simple_tag
 def facebook_it(request, url, title):
-    return """
+    return mark_safe("""
         <div class="facebook">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="https://www.facebook.com/sharer.php?%s" title="%s" target="_blank"></a>
         </div>
-    """ % (ugettext("Share link on FaceBook"), urllib.urlencode({'u': url, 't': title}), ugettext("To FaceBook"))
+    """ % (ugettext("Share link on FaceBook"), urllib.urlencode({'u': url, 't': title}), ugettext("To FaceBook")))
 
 @register.simple_tag
 def facebook_like(request, url, title):
-    return """
+    return mark_safe("""
         <iframe src="https://www.facebook.com/plugins/like.php?href%s&amp;layout=button_count&amp;show_faces=true&amp;width=85&amp;action=like&amp;colorscheme=light&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:85px; height:21px;" allowtransparency="true"></iframe>
-    """ % (urllib.urlencode({'': url}))
+    """ % (urllib.urlencode({'': url})))
     
 @register.simple_tag
 def vk_it(request, url, title):
-    return """
+    return mark_safe("""
         <div class="vk">
             <a onclick="window.open(this.href, '%s', 'width=800,height=300'); return false" href="https://vkontakte.ru/share.php?%s" title="%s"></a>
         </div>
-    """ % (ugettext("Share link on VKontakte"), urllib.urlencode({'url': url, 'title': title}), ugettext("To VKontakte"))
+    """ % (ugettext("Share link on VKontakte"), urllib.urlencode({'url': url, 'title': title}), ugettext("To VKontakte")))
 
 @register.simple_tag
 def vk_like(request, url, title):
@@ -65,28 +75,26 @@ def vk_like(request, url, title):
         request._vk_js = ''
     request._vk_js += 'VK.Widgets.Like("vk_like_%s", {type: "button", pageUrl: "%s", pageTitle: "%s", height: "28px"});' \
         % (block_id, url, settings.SITE_NAME + " - " + title)
-    return '<div id="vk_like_%s"></div>' % block_id
+    return mark_safe('<div id="vk_like_%s"></div>' % block_id)
 
 @register.simple_tag
 def vk_js(request):
-    return """
+    return mark_safe("""
         <script type="text/javascript">
             VK.init({apiId: "%s", onlyWidgets: true});
             %s
-        </script>
-    """ % (settings.VKONTAKTE_APPLICATION_ID, request._vk_js if hasattr(request, '_vk_js') else '')
+        </script>""" % (settings.VKONTAKTE_APPLICATION_ID, request._vk_js if hasattr(request, '_vk_js') else ''))
 
 @register.simple_tag
 def gplus_it(request, url, title):
-    return """
+    return mark_safe("""
         <div class="gplus">
             <g:plusone size="small" annotation="none"></g:plusone>
-        </div>
-    """
+        </div>""")
 
 @register.simple_tag
 def gplus_js(request):
-    return """
+    return mark_safe("""
         <script type="text/javascript">
           window.___gcfg = {lang: 'ru'};
           (function() {
@@ -94,16 +102,14 @@ def gplus_js(request):
             po.src = 'https://apis.google.com/js/plusone.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
           })();
-        </script>
-    """
+        </script>""")
 
 @register.simple_tag
 def gplus_like(request, url, title):
-    return """
+    return mark_safe("""
         <div class="gplus_like">
             <g:plusone size="small"></g:plusone>
-        </div>
-    """
+        </div>""")
 
 share_functions = [tweet_it, vk_it, facebook_it, gplus_it] # Ordering
 like_functions = [tweet_like, vk_like, facebook_like, gplus_like]
@@ -114,11 +120,11 @@ def group_buttons(request, url, title, funcs, block_class):
     url = current_site_url() + url
     url = url.encode('utf-8')
     title = title.encode('utf-8')
-    res = "<div class=\"%s\">" % block_class
+    res = mark_safe("<div class=\"%s\">" % block_class)
     for f in funcs:
         res += f(request, url, title)
-    res += "</div>"
-    return res
+    res += mark_safe("</div>")
+    return mark_safe(res)
     
 @register.simple_tag
 def share_it(request, url, title):
@@ -130,8 +136,8 @@ def like_it(request, url, title):
    
 @register.simple_tag
 def share_js(request):
-    return ' '.join([f(request) for f in share_js_functions])
+    return mark_safe(' ').join([f(request) for f in share_js_functions])
 
 @register.simple_tag
 def like_js(request):
-    return ' '.join([f(request) for f in like_js_functions])
+    return mark_safe(' ').join([f(request) for f in like_js_functions])

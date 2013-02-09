@@ -1,14 +1,20 @@
+from django.conf import settings
 from django.core.serializers.json import DateTimeAwareJSONEncoder
+from django.core.serializers import serialize
 from django.db import models
-from django.template.loader import render_to_string
-from django.template.response import TemplateResponse
+from django.http import HttpResponse
 from django.utils.encoding import force_unicode
+from django.utils.functional import Promise
 from django.utils import simplejson as json
 
+if 'coffin' in settings.INSTALLED_APPS:
+    from coffin.template.loader import render_to_string
+    from coffin.template.response import TemplateResponse
+else:
+    from django.template.loader import render_to_string
+    from django.template.response import TemplateResponse
+
 from decimal import Decimal
-from django.core.serializers import serialize
-from django.http import HttpResponse
-from django.utils.functional import Promise
 
 def json_encode(data):
     """

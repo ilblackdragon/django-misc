@@ -48,7 +48,7 @@ def language_change(request, lang):
         if request.user.is_authenticated():
             user = request.user
             if hasattr(user, AUTH_USER_LANGUAGE_FIELD):
-                user.language = lang
+                setattr(user, AUTH_USER_LANGUAGE_FIELD, lang)
                 user.save()
                 language_saved = True
             else:
@@ -58,7 +58,7 @@ def language_change(request, lang):
                     pass
                 else:
                     if hasattr(profile, AUTH_USER_LANGUAGE_FIELD):
-                        profile.language = lang
+                        setattr(profile, AUTH_USER_LANGUAGE_FIELD, lang)
                         profile.save()
                         language_saved = True
         if not language_saved:

@@ -1,12 +1,17 @@
 from functools import update_wrapper, wraps
 
+from django.conf import settings
 from django.core.cache import cache
 from django.utils.decorators import available_attrs
-from django.views.generic.simple import direct_to_template
+
+if 'coffin' in settings.INSTALLED_APPS:
+    from coffin.template.response import TemplateResponse
+else:
+    from django.template.response import TemplateResponse
 
 def to_template(template_name=None):
     """
-    Decorator for simple call direct_to_template
+    Decorator for simple call TemplateResponse
     Examples:
     @to_template("test.html")
     def test(request):
@@ -25,7 +30,7 @@ def to_template(template_name=None):
         def _wrapped_view(request, *args, **kwargs):
             result = view_func(request, *args, **kwargs)
             if isinstance(result, dict):
-                return direct_to_template(request, result.pop('TEMPLATE', template_name), result)
+                return TemplateResponse(request, result.pop('TEMPLATE', template_name), result)
             return result 
         return wraps(view_func, assigned=available_attrs(view_func))(_wrapped_view)
     return decorator

@@ -25,13 +25,12 @@ Requirements
 ==============
 
 - python >= 2.5
-- pip >= 0.8
-- django >= 1.2
+- django >= 1.2 < 1.5 (Latest tested is 1.4.3)
 
-Optional (for html clearing and bbcodes):
+Optional:
 
-- BeautifulSoup 
-- git+git://github.com/frol/postmarkup.git
+- bbcodes: git+git://github.com/frol/postmarkup.git
+- Coffin, Jinja2
 
 Installation
 =============
@@ -52,10 +51,6 @@ Setup
 
     INSTALLED_APPS += ( 'misc', )
   
-- If you want to use the html clearer ::
-    
-    pip install BeautifulSoup
-    
 - If you want to use bbcodes ::
     
     pip install git+git://github.com/frol/postmarkup.git

@@ -3,7 +3,12 @@ from django.db import models
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_unicode
-from django.utils import simplejson as json
+
+#Fix for Django 1.5 and simplejson compatibility
+try:
+    import json
+except ImportError:
+    from django.utils import simplejson as json
 
 from decimal import Decimal
 from django.core.serializers import serialize

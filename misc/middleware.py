@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import translation
 from django.utils.cache import patch_vary_headers
 
-from misc.utils import custom_spaceless
+from .utils import custom_spaceless, AUTH_USER_LANGUAGE_FIELD
 
 
 class SpacelessMiddleware(object):

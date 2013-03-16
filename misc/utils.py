@@ -9,6 +9,8 @@ from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.utils.encoding import smart_str, force_unicode, iri_to_uri
 
+AUTH_USER_LANGUAGE_FIELD = getattr(settings, 'AUTH_USER_LANGUAGE_FIELD', 'language')
+
 
 class HttpResponseReload(HttpResponse):
     """

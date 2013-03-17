@@ -11,9 +11,7 @@ if 'coffin' in settings.INSTALLED_APPS:
     from coffin.template.response import TemplateResponse
 
 from .signals import language_changed
-
-
-AUTH_USER_LANGUAGE_FIELD = getattr(settings, 'AUTH_USER_LANGUAGE_FIELD', 'language')
+from utils import AUTH_USER_LANGUAGE_FIELD
 
 
 def server_error(request, template_name='500.html'):

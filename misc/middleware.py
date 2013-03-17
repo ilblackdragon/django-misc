@@ -5,7 +5,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.utils import translation
 from django.utils.cache import patch_vary_headers
 
-from misc.utils import custom_spaceless
+from .utils import custom_spaceless, AUTH_USER_LANGUAGE_FIELD
 
 
 class SpacelessMiddleware(object):
@@ -36,11 +36,17 @@ class LocaleMiddleware(object):
 
     def get_language_for_user(self, request):
         if request.user.is_authenticated():
-            try:
-                profile = request.user.get_profile()
-                return profile.language
-            except (ObjectDoesNotExist, SiteProfileNotAvailable):
-                pass
+            user = request.user
+            language = getattr(user, AUTH_USER_LANGUAGE_FIELD, None)
+            if language is None:
+                try:
+                    profile = user.get_profile()
+                except SiteProfileNotAvailable:
+                    pass
+                else:
+                    language = getattr(profile, AUTH_USER_LANGUAGE_FIELD, None)
+            if language is not None:
+                return language
         return translation.get_language_from_request(request)
 
     def process_request(self, request):

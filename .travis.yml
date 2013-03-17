@@ -2,8 +2,9 @@ language: python
 python:
   - "2.6"
   - "2.7"
+  - "3.3"
 install:
   - pip install tox
 script:
-  - tox
+  - TOXENV=py$(echo $TRAVIS_PYTHON_VERSION | tr -d .) tox -v
 

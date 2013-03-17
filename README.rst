@@ -6,6 +6,9 @@ django-misc
 **Django misc** is module with set of utilities, decorators, templatetags that everybody uses at least once in project.
 So here they all in one application, that will grow to aggregate all usefull utilities for Django.
 
+.. image:: https://secure.travis-ci.org/ilblackdragon/django-misc.png?branch=master
+   :target: http://travis-ci.org/ilblackdragon/django-misc
+
 .. contents::
 
 Quick overview

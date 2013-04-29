@@ -1,3 +1,6 @@
+from django.conf import settings
+
+
 def useful_constants(request):
     """
     This workaround useful if you want use {% if var == None %}, because
@@ -6,4 +9,4 @@ def useful_constants(request):
     var = False =>  First
     var = True  =>  True
     """
-    return {'True': True, 'False': False, 'None': None}
+    return {'True': True, 'False': False, 'None': None, 'settings': settings}

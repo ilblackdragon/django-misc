@@ -53,38 +53,46 @@ def receiver(signal, **kwargs):
         return func
     return _decorator
 
-def cached(cache_key, invalidate_signals, timeout=None):
+def cached(cache_key=None, invalidate_signals=None, timeout=None):
     def decorator(function):
         def invalidate(sender, *args, **kwargs):
             """
-            Simple cache invalidate fallback function..
+            Simple cache invalidate fallback function.
             """
-            cache.delete(_cache_key)
+            cache.delete(cache_key)
 
         def wrapped(*args, **kwargs):
-            if callable(cache_key):
-                _cache_key = cache_key(*args, **kwargs)
+            if cache_key is None:
+                if invalidate_signals is not None:
+                    raise AttributeError("You cannot use function-level caching (cache_key=None) "
+                        "with invalidate signals.")
+                # Store cached data into function itself
+                if not hasattr(function, '_cached'):
+                    function._cached = function(*args, **kwargs)
+                return function._cached
             else:
-                _cache_key = cache_key
-            result = cache.get(_cache_key)
-            if result is None:
-                result = function(*args, **kwargs)
-                if _cache_key is not None:
-                    cache.set(_cache_key, result, timeout)
+                # Cache to external cache backend
+                if callable(cache_key):
+                    _cache_key = cache_key(*args, **kwargs)
+                else:
+                    _cache_key = cache_key
+                result = cache.get(_cache_key)
+                if result is None:
+                    result = function(*args, **kwargs)
+                    if _cache_key is not None:
+                        cache.set(_cache_key, result, timeout)
             return result
 
-        wrapped.invalidate = invalidate
-        for signal, sender, _invalidate in invalidate_signals:
-            # weak - Django stores signal handlers as weak references by default. Thus, if your
-            # receiver is a local function, it may be garbage collected. To prevent this, pass
-            # weak=False when you call the signal`s connect() method.
-            if _invalidate is None:
-                if callable(cache_key):
-                    continue
-                _invalidate = wrapped.invalidate
-            signal.connect(_invalidate, sender=sender, weak=False)
+        if invalidate_signals:
+            wrapped.invalidate = invalidate
+            for signal, sender, _invalidate in invalidate_signals:
+                # weak - Django stores signal handlers as weak references by default. Thus, if your
+                # receiver is a local function, it may be garbage collected. To prevent this, pass
+                # weak=False when you call the signal`s connect() method.
+                if _invalidate is None:
+                    if callable(cache_key):
+                        continue
+                    _invalidate = wrapped.invalidate
+                signal.connect(_invalidate, sender=sender, weak=False)
         return wrapped
     return decorator
-
-def cached_property(cache_key=None, timeout=None, invalidate_signals=None):
-    pass

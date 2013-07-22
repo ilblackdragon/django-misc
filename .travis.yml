@@ -3,8 +3,14 @@ python:
   - "2.6"
   - "2.7"
   - "3.3"
+env:
+  - DJANGO_VERSION=1.2.7
+  - DJANGO_VERSION=1.3.7
+  - DJANGO_VERSION=1.4.5
+  - DJANGO_VERSION=1.5.1
 install:
   - pip install tox
+  - pip install -q Django==$DJANGO_VERSION --use-mirrors
 script:
   - TOXENV=py$(echo $TRAVIS_PYTHON_VERSION | tr -d .) tox -v
 

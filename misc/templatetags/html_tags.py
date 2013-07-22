@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import re
 
+from django.conf import settings
+
 if 'coffin' in settings.INSTALLED_APPS:
     from coffin.template import Library
 else:

@@ -67,6 +67,6 @@ def language_change(request, lang):
 
 def coffin_template_response(request, view, **kwargs):
     response = view(request, **kwargs)
-    if is_coffin:
+    if is_coffin and hasattr(response, 'template_name'):
         return TemplateResponse(request, response.template_name, response.context_data)
     return response

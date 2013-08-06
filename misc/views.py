@@ -14,7 +14,7 @@ from .signals import language_changed
 from utils import AUTH_USER_LANGUAGE_FIELD
 
 
-def server_error(request, template_name='500.html'):
+def handler500(request, template_name='500.html'):
     """
         500 error handler.
 
@@ -22,9 +22,26 @@ def server_error(request, template_name='500.html'):
         Context:
             MEDIA_URL
                 Path of static media (e.g. "media.example.org")
+            STATIC_URL
     """
     t = loader.get_template(template_name) # You need to create a 500.html template.
     return http.HttpResponseServerError(t.render(Context({
+        'MEDIA_URL': settings.MEDIA_URL,
+        'STATIC_URL': settings.STATIC_URL
+    })))
+
+def handler404(request, template_name='404.html'):
+    """
+        404 error handler.
+
+        Templates: `404.html`
+        Context:
+            MEDIA_URL
+                Path of static media (e.g. "media.example.org")
+            STATIC_URL
+    """
+    t = loader.get_template(template_name) # You need to create a 404.html template.
+    return http.HttpResponseNotFound(t.render(Context({
         'MEDIA_URL': settings.MEDIA_URL,
         'STATIC_URL': settings.STATIC_URL
     })))

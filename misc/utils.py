@@ -70,3 +70,34 @@ def user_from_session_key(session_key):
         return auth_backend.get_user(user_id)
     else:
         return AnonymousUser()
+
+def get_hierarchy_path(str_id, file_ext, root, auto_mkdir=True):
+    """
+    Attached filenames consists of extra_path, that build from id, and id plus filetype.
+    """
+    str_id_len = len(str_id)
+    if str_id_len >= settings.PREFIX_PATH_LENGTH:
+        # generate path name for big amount of files:
+        # 1234567890.txt -> 123/456/789/
+        extra_path = os.path.join(*[
+            str_id[i * settings.PREFIX_PATH_LENGTH : (i + 1) * settings.PREFIX_PATH_LENGTH]
+                for i in xrange(str_id_len / settings.PREFIX_PATH_LENGTH)
+        ])
+        if auto_mkdir:
+            try:
+                os.makedirs(os.path.join(root, extra_path))
+            except OSError:
+                pass
+    else:
+        extra_path = ''
+    return os.path.join(root, extra_path, str_id + file_ext)
+
+def get_hierarchy_uploader(root):
+    """
+    Returns uploader, that uses get_hierarch_path to store files
+    """
+    def upload_to(instance, filename):
+        file_name, file_ext = os.path.splitext(filename)
+        return get_hierarchy_path(str(instance.id), file_ext, root)
+    return upload_to
+

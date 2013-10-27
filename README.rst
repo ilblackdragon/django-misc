@@ -34,6 +34,7 @@ Optional:
 
 - bbcodes: git+git://github.com/frol/postmarkup.git
 - Coffin, Jinja2
+- pymisc: git+git://github.com/ilblackdragon/pymisc.git
 
 Installation
 =============
@@ -57,6 +58,10 @@ Setup
 - If you want to use bbcodes ::
     
     pip install git+git://github.com/frol/postmarkup.git
+
+- Some functionality requires pymisc (optional) ::
+
+    pip install git+git://github.com/ilblackdragon/pymisc.git
     
     
 Use django-misc

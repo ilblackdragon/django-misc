@@ -9,6 +9,8 @@ Author: Ross Lawley
 
 import logging
 import os
+import signal
+import sys
 import time
 
 from lockfile import FileLock, AlreadyLocked, LockTimeout
@@ -26,6 +28,11 @@ def handle_lock(handle):
     """
     
     def wrapper(self, *args, **options):
+        def on_interrupt(signum, frame):
+            # It's necessary to release lockfile
+            sys.exit()
+        signal.signal(signal.SIGTERM, on_interrupt)
+
         start_time = time.time()
         try:
             verbosity = int(options.get('verbosity', 0))

@@ -27,13 +27,14 @@ Here you'll find:
 Requirements
 ==============
 
-- python >= 2.5
-- django >= 1.2 < 1.5 (Latest tested is 1.4.3)
+- python >= 2.5 (3.x wan't texted)
+- django >= 1.2 <= 1.6 (tested with Django 1.6)
 
 Optional:
 
 - bbcodes: git+git://github.com/frol/postmarkup.git
 - Coffin, Jinja2
+- pymisc: git+git://github.com/ilblackdragon/pymisc.git
 
 Installation
 =============
@@ -57,6 +58,10 @@ Setup
 - If you want to use bbcodes ::
     
     pip install git+git://github.com/frol/postmarkup.git
+
+- Some functionality requires pymisc (optional) ::
+
+    pip install git+git://github.com/ilblackdragon/pymisc.git
     
     
 Use django-misc

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import string
 import re
 
@@ -70,3 +71,14 @@ def user_from_session_key(session_key):
         return auth_backend.get_user(user_id)
     else:
         return AnonymousUser()
+
+def get_hierarchy_uploader(root):
+    """
+    Returns uploader, that uses get_hierarch_path to store files
+    """
+    from pymisc.utils.files import get_hierarchy_path
+    def upload_to(instance, filename):
+        file_name, file_ext = os.path.splitext(filename)
+        return get_hierarchy_path(str(instance.id), file_ext, root, prefix_path_length=settings.PREFIX_PATH_LENGTH)
+    return upload_to
+

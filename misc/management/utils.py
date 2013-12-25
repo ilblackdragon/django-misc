@@ -64,6 +64,8 @@ def handle_lock(handle):
         
         try:
             handle(self, logger, *args, **options)
+        except (KeyboardInterrupt, SystemExit):
+            pass
         except:
             import traceback
             logging.warn("Command Failed")

@@ -98,7 +98,7 @@ class LiveField(models.Field):
     def get_prep_value(self, value):
         # Convert in-Python value to value we'll store in DB
         if value:
-            return 1
+            return True
         return None
 
     def to_python(self, value):

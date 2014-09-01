@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.contrib.admin.views.main import ChangeList
 
 def admin_tagify(short_description=None, allow_tags=True):

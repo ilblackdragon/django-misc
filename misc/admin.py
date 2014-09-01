@@ -92,13 +92,12 @@ class SpecialOrderingChangeList(ChangeList):
 
 class SoftDeleteAdmin(admin.ModelAdmin):
     """Custom admin page for models with SoftDeleteManager."""
-    list_display = ('id', '__unicode__', 'deleted', )
-    list_filter = ('deleted', )
+    list_display = ('id', '__unicode__', 'alive', )
+    list_filter = ('alive', )
 
-    def get_query_set(self):
+    def queryset(self, request):
         """Returns a Queryset of all model instances that can be edited by the 
         admin site. This is used by changelist_view."""
-
         query_set = self.model._default_manager.all_with_deleted()
         ordering = self.ordering or ()
         if ordering:

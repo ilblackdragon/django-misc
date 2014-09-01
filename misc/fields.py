@@ -79,13 +79,17 @@ class AutoOneToOneField(OneToOneField):
     def contribute_to_related_class(self, cls, related):
         setattr(cls, related.get_accessor_name(), AutoSingleRelatedObjectDescriptor(related))
 
+
 class LiveField(models.Field):
     """Similar to a BooleanField, but stores False as NULL."""
     description = 'Soft-deletion status'
     __metaclass__ = models.SubfieldBase
 
-    def __init__(self):
-        super(LiveField, self).__init__(default=True, null=True)
+    def __init__(self, *args, **kwargs):
+        # Pop the default & null and override them with always True.
+        _ = kwargs.pop('default', True)
+        _ = kwargs.pop('null', True)
+        super(LiveField, self).__init__(default=True, null=True, *args, **kwargs)
 
     def get_internal_type(self):
         # Create DB column as though for a NullBooleanField.
@@ -116,3 +120,9 @@ class LiveField(models.Field):
 
         return super(LiveField, self).get_prep_lookup(lookup_type, value)
 
+
+try:
+  from south.modelsinspector import add_introspection_rules
+  add_introspection_rules([], ["^misc\.fields\.LiveField"])
+except ImportError:
+    pass

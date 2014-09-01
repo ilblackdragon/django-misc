@@ -35,7 +35,6 @@ class SoftDeleteManager(models.Manager):
 
 	def hard_delete(self):
 		return self.get_query_set().hard_delete()
-		return super(SoftDeleteManager, self).get_query_set.filter(alive=True)
 
 	def get(self, *args, **kwargs):
 		"""If specific record was requested, return if even if it's deleteted."""

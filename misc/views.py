@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 from django import http
 from django.conf import settings
-from django.contrib.auth.models import SiteProfileNotAvailable
 from django.dispatch import Signal
 from django.template import Context, loader
 from django.shortcuts import redirect
+
+# Django 1.7 Removed custom profiles
+try:
+    from django.contrib.auth.models import SiteProfileNotAvailable
+except ImportError:
+    SiteProfileNotAvailable = None
 
 if 'coffin' in settings.INSTALLED_APPS:
     is_coffin = True
@@ -67,15 +72,17 @@ def language_change(request, lang):
                 user.save()
                 language_saved = True
             else:
-                try:
-                    profile = user.get_profile()
-                except SiteProfileNotAvailable:
-                    pass
+                if SiteProfileNotAvailable is None:
+                    profile = user
                 else:
-                    if hasattr(profile, AUTH_USER_LANGUAGE_FIELD):
-                        setattr(profile, AUTH_USER_LANGUAGE_FIELD, lang)
-                        profile.save()
-                        language_saved = True
+                    try:
+                        profile = user.get_profile()
+                    except SiteProfileNotAvailable:
+                        profile = None
+                if profile is not None and hasattr(profile, AUTH_USER_LANGUAGE_FIELD):
+                    setattr(profile, AUTH_USER_LANGUAGE_FIELD, lang)
+                    profile.save()
+                    language_saved = True
         if not language_saved:
             response.set_cookie(settings.LANGUAGE_COOKIE_NAME, lang,
                 max_age=settings.SESSION_COOKIE_AGE)

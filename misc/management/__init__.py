@@ -1,10 +1,10 @@
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.db.models import signals
 from django.utils.translation import ugettext_noop as _
 
 
 def sync_site(app, created_models, verbosity, **kwargs):
+    from django.contrib.sites.models import Site
     try:
         site = Site.objects.get_current()
         site.name = settings.SITE_NAME

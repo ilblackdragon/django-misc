@@ -76,6 +76,13 @@ def get_hierarchy_uploader(root):
     """
     Returns uploader, that uses get_hierarch_path to store files
     """
+    # Workaround to avoid Django 1.7 makemigrations wierd behaviour:
+    # More details: https://code.djangoproject.com/ticket/22436
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] in ('makemigrations', 'migrate'):
+        # Hide ourselves from Django migrations
+        return None
+
     from pymisc.utils.files import get_hierarchy_path
     def upload_to(instance, filename):
         file_name, file_ext = os.path.splitext(filename)
